@@ -60,16 +60,16 @@ wget https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/
 sudo sh cuda_11.7.0_515.43.04_linux.run
 ```
 - CUDA installer window appears, de-select the driver (as it is already installed) and press enter to perform installation.
-- Run following commands on terminal to change bashrc:
+- Run following commands on terminal to change .bashrc:
 ```
 gedit  ~/.bashrc
 ```
-- Add following lines in bashrc:
+- Add following lines in .bashrc:
 ```
 export PATH=/usr/local/cuda-11.7/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 ```
-- Close the bashrc and refresh the shell environment by running following command: 
+- Close the .bashrc and refresh the shell environment by running following command: 
 ```
 source ~/.bashrc
 ```
@@ -153,12 +153,14 @@ cd opencv_contrib
 git checkout 4.5.4
 cd ..
 ```
-Using CMake to build the library
+- Using CMake to build the library
+```
 cd ~/opencv
-
 mkdir build
 cd build
-Pass your own flags to build the library:
+```
+- Pass your own flags to build the library:
+```
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D CMAKE_INSTALL_PREFIX=/usr/local \
 -D INSTALL_C_EXAMPLES=ON \
@@ -170,58 +172,74 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
 -D BUILD_EXAMPLES=ON \
 -D OPENCV_GENERATE_PKGCONFIG=YES ..
-Using make utility for building the library:
-# To find the number of threads compatible in your machine run the following command.
+```
+- Use make utility for building the library:
+> To find the number of threads compatible in your machine run the following command.
+```
 nproc
-
-# The following command specifies the number of jobs with make utility
+```
+> The following command specifies the number of jobs with make utility
+```
 make -j8
-
-# Install the library by running the following commands.
+```
+- Install the library by running the following commands:
+```
 sudo make install
-
 sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
-
 sudo ldconfig
-Verify the content of opencv4.pc file:
+```
+- Verify the contents of opencv4.pc file by running following commands:
+```
 cd ~/Desktop/opencv/build/unix-install/
-
 gedit opencv4.pc
+```
+> The contents of opencv4.pc file should be following:
+```
 prefix=/usr/local
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include/opencv4
-Relocate the opencv4.pc file
-# Create a new directory ‘pkgconfig’ in the location /usr/local/lib/
+```
+- Relocate the opencv4.pc file
+> Create a new directory ‘pkgconfig’ in the location /usr/local/lib/
+```
 cd /usr/local/lib/
-
 mkdir pkgconfig
-
-# Move or Copy the opencv4.pc file to the newly created directory
+```
+> Move or Copy the opencv4.pc file to the newly created directory
+```
 sudo cp ~/Desktop/opencv/build/unix-install/opencv4.pc /usr/local/lib/pkgconfig/
-Adding file location to PKG_CONFIG_PATH Variable and modifying .bashrc file:
-# Open .bashrc file
+```
+- Adding file location to PKG_CONFIG_PATH Variable and modifying .bashrc file:
+> Open .bashrc file
+```
 sudo gedit ~/.bashrc
-# Add the following 2 lines at the end of the file i.e. copy the following lines at the end of .bashrc file.
+```
+> Add the following 2 lines at the end of the file i.e. copy the following lines at the end of .bashrc file.
+```
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-
 export PKG_CONFIG_PATH
-Save and Exit the file and run the following command.
+```
+> Save and Exit the file and run the following command.
+```
 source ~/.bashrc
-
-# You can verify that the path is added or not by executing the following command
+```
+> You can verify that the path is added or not by executing the following command on terminal:
+```
 echo $PKG_CONFIG_PATH
-Verifying the Installation
+```
+- Verifying the Installation
+```
 pkg-config --modversion opencv4
-
 python3 -c "import cv2; print(cv2.__version__)"
-Incase the versions are different, then:
-(i) If it is not pointing to correct cv2.so file, following the steps of symbolic link in the following link and correct it: https://techzizou.com/setup-opencv-dnn-cuda-module-for-linux/
-
-Also, verify the simulink of cv2.so by running the following command (refer: https://linuxhint.com/remove-symbolic-link-linux):
-ls –l
-
-(ii) If you want python to choose specific version of opencv or specific cv2.so of opencv, then follow the link: https://stackoverflow.com/questions/44647906/how-to-make-python-to-choose-a-specific-version-of-opencv
+```
+> **_Note:_** Incase the last step results different versions, then:
+> (i) If it is not pointing to correct cv2.so file, following the steps of symbolic link in the following link and correct it: https://techzizou.com/setup-opencv-dnn-cuda-module-for-linux/
+> Also, verify the simulink of cv2.so by running the following command (refer: https://linuxhint.com/remove-symbolic-link-linux):
+> ```
+> ls –l
+> ```
+> (ii) If you want python to choose specific version of opencv or specific cv2.so of opencv, then follow the link: https://stackoverflow.com/questions/44647906/how-to-make-python-to-choose-a-specific-version-of-opencv
 ## Step 5: Installing the Darknet Framework:
 (Remember:  For successful installation of Darknet, Install everything mentioned in Step 1, Step 2, Step 3, and Step 4. Also, follow the installation sequence strictly i.e., install cuda and cudnn before installing opencv)
 Open a terminal and clone darknet
