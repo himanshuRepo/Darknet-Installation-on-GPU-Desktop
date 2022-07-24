@@ -1,12 +1,9 @@
 # Steps to install Darknet Framework on Ubuntu 20.04 Desktop with GPU 
 
-## Step 1: Open terminal
+## Step 1: Install following dependencies through terminal:
 ```
 sudo apt-get update
 sudo apt-get upgrade
-```
-### a) Install following dependencies:
-```
 sudo apt-get install build-essential cmake unzip pkg-config
 sudo apt-get install gcc-6 g++-6
 sudo apt-get install libxmu-dev libxi-dev libglu1-mesa libglu1-mesa-dev
@@ -18,7 +15,7 @@ sudo apt-get install libhdf5-serial-dev
 sudo apt-get install python3-dev python3-tk python-imaging-tk
 sudo apt-get install libgtk-3-dev
 ```
-### b) Next, add the ppa:graphics-drivers/ppa repository into your system:
+> Adding ppa:graphics-drivers/ppa repository into your system:
 ```
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt update
@@ -220,11 +217,11 @@ sudo gedit ~/.bashrc
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export PKG_CONFIG_PATH
 ```
-> Save and Exit the file and run the following command.
+> Save and close the .bashrc file and run the following command.
 ```
 source ~/.bashrc
 ```
-> You can verify that the path is added or not by executing the following command on terminal:
+> Verifying whether the path is added or not by executing the following command on terminal:
 ```
 echo $PKG_CONFIG_PATH
 ```
@@ -234,37 +231,52 @@ pkg-config --modversion opencv4
 python3 -c "import cv2; print(cv2.__version__)"
 ```
 > **_Note:_** Incase the last step results different versions, then:
-> (i) If it is not pointing to correct cv2.so file, following the steps of symbolic link in the following link and correct it: https://techzizou.com/setup-opencv-dnn-cuda-module-for-linux/
-> Also, verify the simulink of cv2.so by running the following command (refer: https://linuxhint.com/remove-symbolic-link-linux):
+> 
+> (i) Verify the simulink of cv2.so by running the following command (refer: https://linuxhint.com/remove-symbolic-link-linux):
 > ```
 > ls –l
 > ```
+>  If it is not pointing to correct cv2.so file, follow the steps of symbolic link in the following link and correct it: https://techzizou.com/setup-opencv-dnn-cuda-module-for-linux/
+> 
 > (ii) If you want python to choose specific version of opencv or specific cv2.so of opencv, then follow the link: https://stackoverflow.com/questions/44647906/how-to-make-python-to-choose-a-specific-version-of-opencv
 ## Step 5: Installing the Darknet Framework:
-(Remember:  For successful installation of Darknet, Install everything mentioned in Step 1, Step 2, Step 3, and Step 4. Also, follow the installation sequence strictly i.e., install cuda and cudnn before installing opencv)
-Open a terminal and clone darknet
-Clone the darknet git repository using the following command: (Visit official AlexeyAB’s GitHub to learn more about darknet.)
+> **_Note:_** For successful installation of Darknet, follow the installation sequence strictly i.e., install cuda and cudnn before installing opencv (Step 1, Step 2, Step 3, and Step 4.)
+- Open a terminal and clone the darknet git repository using the following command:
+> Visit official AlexeyAB’s GitHub to learn more about darknet.
+```
 git clone https://github.com/AlexeyAB/darknet.git
-Make changes in the Makefile
-(i) Go inside the darknet folder and open the makefile. For reference, you can do changes based on following link: https://github.com/AlexeyAB/darknet/#how-to-compile-on-linux-using-make
+```
+- Go inside the darknet folder and open the makefile to do following changes: 
+> For reference, you can do changes based on following link: https://github.com/AlexeyAB/darknet/#how-to-compile-on-linux-using-make
+```
 GPU=1
 CUDNN=1
 CUDNN_HALF=1
 OPENCV=1
 LIBSO=1
-(ii) Next, set the ARCH in the makefile to the compute capability as per your GPU Architecture by referring following link: https://developer.nvidia.com/cuda-gpus (Eg., Your compute capability is 8.6)
+```
+- In makefile, set the ARCH according to the compute capability as per your GPU Architecture.
+> To know compute capability of GPU Architecture refer following link: https://developer.nvidia.com/cuda-gpus (Eg., Your compute capability is 8.6)
+```
 ARCH= -gencode arch=compute_86,code=[sm_86,compute_86]
-
-Run make command:
+```
+- Run make command:
+```
 cd darknet
-
-
 make
-Check the installation by typing the following:
+```
+> **_Note:_** Incase above step gives lcuda error, do following changes in the makefile and rerun above command.
+> 
+> (Referred: https://stackoverflow.com/questions/62999715/when-i-make-darknet-with-cuda-1-usr-bin-ld-cannot-find-lcudaoccured-how)
+> ```
+> LDFLAGS+= -L/usr/local/cuda/lib64 -lcudart -lcublas -lcurand -L/usr/local/cuda/lib64/stubs -lcuda
+> ```
+- Verify the installation by typing the following:
+```
 ./darknet
-the o/p should be:
-usage: ./darknet <function>
-Incase step d gives error of lcuda, then do following changes in the makefile and rerun step c and step d: (Referred: https://stackoverflow.com/questions/62999715/when-i-make-darknet-with-cuda-1-usr-bin-ld-cannot-find-lcudaoccured-how)
-LDFLAGS+= -L/usr/local/cuda/lib64 -lcudart -lcublas -lcurand -L/usr/local/cuda/lib64/stubs -lcuda
-
+```
+> The o/p should be:
+> ``` 
+> usage: ./darknet <function>
+> ```
 
