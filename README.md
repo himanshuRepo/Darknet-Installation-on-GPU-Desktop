@@ -103,16 +103,16 @@ sudo cp -P include/* /usr/local/cuda/include/
 ```
 ## Step 4: Build OpenCV from source with CUDA support
 > **_Note:_**
-> 1. Assuming python is already installed in the system,
+> 1. Assuming python3 is already installed in the system,
 > 2. Installing opencv without creating the virtual environment, 
-> 3. Referred link is https://cv-tricks.com/installation/opencv-4-1-ubuntu18-04/
+> 3. Referred link: https://cv-tricks.com/installation/opencv-4-1-ubuntu18-04/
 - Verify cuda installation by running following commands:
 ```
 nvidia-smi
 nvcc –V
 ```
 - Installing dependencies of OpenCV:
-> Note: Run each command individual so that you can see whether every command has executed successfully or not
+> Note: Run each command individual so that you can see whether every command has executed successfully or not.
 ```
 sudo apt-get update -y
 sudo apt-get remove -y x264 libx264-dev # Remove the older version of libx264-dev and x264
